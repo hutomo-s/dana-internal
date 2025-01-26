@@ -1,0 +1,39 @@
+version: '3.8'
+services:
+  db:
+    image: mysql:8.4
+    container_name: dana-internal-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: dana_internal_db
+      MYSQL_USER: dana_user
+      MYSQL_PASSWORD: d4n4_s4ndb0x_p@ssw0rd
+    volumes:
+      - data:/var/lib/mysql
+      - "./mysql_scripts:/docker-entrypoint-initdb.d/:ro"
+    ports:
+      - "3308:3306"
+    networks:
+      - app-network
+  
+  web:
+    image: shinsenter/php:8.2-fpm-apache
+    container_name: dana-internal-web
+    volumes:
+      - ./../public:/var/www/html
+      - ./..:/var/www
+    ports:
+      - "8082:80"
+    environment:
+      - post_max_size=40M
+      - upload_max_filesize=40M
+    depends_on:
+      - db
+    networks:
+      - app-network
+
+volumes:
+  data:
+
+networks:
+  app-network:
