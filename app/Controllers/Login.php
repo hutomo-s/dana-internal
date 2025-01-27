@@ -23,7 +23,7 @@ class Login extends BaseController
             'api_login_submit' => base_url('api/login/submit'),
         ];
 
-        return view('dashboard/login', $data);
+        return view('dashboard/login_index', $data);
     }
 
     /**
