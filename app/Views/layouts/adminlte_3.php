@@ -35,7 +35,7 @@
                             <?= session()->get('display_name'); ?> <i class="fas fa-user-circle ml-2"></i> 
                         </a>
                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
-                            <a href="#" class="dropdown-item">
+                            <a href="<?= base_url('dashboard/logout'); ?>" class="dropdown-item">
                                 <i class="fas fa-sign-out-alt mr-2"></i> Log Out
                             </a>
                         </div>
