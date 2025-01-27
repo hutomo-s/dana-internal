@@ -31,7 +31,7 @@ class DashboardAuthentication implements FilterInterface
 
         if(!$dashboard_logged_in)
         {
-            return redirect()->to(site_url('dashboard/login'));
+            return redirect()->to(base_url('dashboard/login'));
         }
     }
 

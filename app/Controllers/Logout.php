@@ -9,6 +9,6 @@ class Logout extends BaseController
     {
         $session = service('session');
         $session->destroy();
-        return redirect()->to('/dashboard/login');
+        return redirect()->to(base_url('dashboard/login'));
     }
 }
