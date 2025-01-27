@@ -32,7 +32,7 @@
 
                     <li class="nav-item dropdown">
                         <a class="nav-link" data-toggle="dropdown" href="#">
-                            User Fullname <i class="fas fa-user-circle ml-2"></i> 
+                            <?= session()->get('display_name'); ?> <i class="fas fa-user-circle ml-2"></i> 
                         </a>
                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                             <a href="#" class="dropdown-item">
