@@ -48,7 +48,7 @@
             <aside class="main-sidebar sidebar-dark-primary elevation-4">
                 <!-- Brand Logo -->
                 <a href="index3.html" class="brand-link">
-                <img src="<?= base_url("assets/image/logo_dana_blue.svg") ?>" alt="Dana Internal Logo" class="brand-image elevation-3" style="opacity: .8">
+                <img src="<?= base_url("assets/image/logo_dana_blue.svg") ?>" alt="Dana Internal Logo" class="brand-image elevation-3">
                 <span class="brand-text font-weight-light">Internal</span>
                 </a>
                 <!-- Sidebar -->
