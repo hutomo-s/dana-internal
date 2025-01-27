@@ -17,3 +17,9 @@ $routes->group('api', static function($routes) {
     $routes->post('login/submit', 'Login::submit');
 
 });
+
+$routes->group('dashboard', ['filter' => [\App\Filters\DashboardAuthentication::class]], static function($routes) {
+    
+    $routes->get('/', 'Dashboard::index');
+
+});
