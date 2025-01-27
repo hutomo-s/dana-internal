@@ -36,12 +36,6 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-sm dropdown-menu-right">
                             <a href="#" class="dropdown-item">
-                                <i class="fas fa-id-card mr-2"></i> Edit Profile
-                            </a>
-                            
-                            <div class="dropdown-divider"></div>
-                            
-                            <a href="#" class="dropdown-item">
                                 <i class="fas fa-sign-out-alt mr-2"></i> Log Out
                             </a>
                         </div>
