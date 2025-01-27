@@ -118,9 +118,7 @@ class Login extends BaseController
         
         $query = $builder->get(1);
         
-        $result = $query->getResult();
-
-        $user_data = end($result);
+        $user_data = $query->getRow();
 
         $session_data = [
             'user_id' => $user_data->id,
