@@ -11,3 +11,9 @@ $routes->get('/dashboard/login', 'Login::index');
     
 $routes->get('/dashboard/logout', 'Logout::index');
 
+
+$routes->group('api', static function($routes) {
+
+    $routes->post('login/submit', 'Login::submit');
+
+});
