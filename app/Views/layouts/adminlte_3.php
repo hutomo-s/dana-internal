@@ -109,13 +109,16 @@
                 <!-- /.sidebar -->
             </aside>
             <!-- Content Wrapper. Contains page content -->
-            <div class="content-wrapper">
+            <div class="content-wrapper pl-3 pb-5">
                 <!-- Content Header (Page header) -->
                 <div class="content-header">
                     <div class="container-fluid">
                         <div class="row mb-2">
-                            <div class="col-sm-6">
-                                <h1 class="m-0">Dashboard</h1>
+                            <div class="col-12">
+                                <div class="d-flex flex-row">
+                                    <div class="mr-3"><h1 class="m-0 d-inline-block"><?= $this->renderSection('page_title') ?></h1></div>
+                                    <div class=""><?= $this->renderSection('header_content') ?></div>
+                                </div>
                             </div>
                             <!-- /.col -->
                         </div>
