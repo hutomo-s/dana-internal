@@ -101,6 +101,24 @@
                                     </li>
                                 </ul>
                             </li>
+
+                            <li class="nav-item">
+                                <a href="#" class="nav-link">
+                                <i class="nav-icon fab fa-wpforms"></i>
+                                <p>
+                                    Exception Paper
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                                </a>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
+                                        <a href="<?= base_url('dashboard/exception-papers'); ?>" class="nav-link">
+                                        <p>All Exception Papers</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+
                         </ul>
 
                     </nav>

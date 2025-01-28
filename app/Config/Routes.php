@@ -27,6 +27,8 @@ $routes->group('dashboard', ['filter' => [\App\Filters\DashboardAuthentication::
     $routes->get('users', 'Users::index');
     
     $routes->get('users/create', 'Users::create');
+
+    $routes->get('exception-papers', 'ExceptionPapers::index');
     
     $routes->get('/', 'Dashboard::index');
 
