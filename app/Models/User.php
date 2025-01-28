@@ -12,7 +12,10 @@ class User extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'user_email', 'display_name', 'role_id', 'department_id',
+        'is_active', 'line_manager_id', 'signature_image_fullpath'
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
