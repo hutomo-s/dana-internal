@@ -20,6 +20,7 @@ $routes->group('api', static function($routes) {
 
 $routes->group('dashboard', ['filter' => [\App\Filters\DashboardAuthentication::class]], static function($routes) {
     
+    $routes->get('users', 'Users::index');
     $routes->get('/', 'Dashboard::index');
 
 });
