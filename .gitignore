@@ -1,5 +1,8 @@
 .env
 
+public/uploads/*
+!public/uploads/init
+
 #-------------------------
 # Temporary Files
 #-------------------------
