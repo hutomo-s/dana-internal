@@ -42,9 +42,6 @@
                     <input type="file" accept="image/*" class="custom-file-input" name="signature_image">
                     <label class="custom-file-label">Choose file</label>
                 </div>
-                <div class="input-group-append">
-                    <span class="input-group-text">Upload</span>
-                </div>
             </div>
         </div>
 
