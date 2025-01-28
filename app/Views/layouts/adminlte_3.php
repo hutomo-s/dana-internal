@@ -131,6 +131,7 @@
                 <div class="content">
                     <div class="container-fluid">
                         <!-- @content here -->
+                        <?= $this->renderSection('content') ?>
                     </div>
                     <!-- /.container-fluid -->
                 </div>
@@ -156,5 +157,6 @@
         <script src="<?= base_url("assets/adminlte/plugins/bootstrap/js/bootstrap.bundle.min.js") ?>"></script>
         <!-- AdminLTE App -->
         <script src="<?= base_url("assets/adminlte/dist/js/adminlte.min.js") ?>"></script>
+        <?= $this->renderSection('script_tags') ?>
     </body>
 </html>
