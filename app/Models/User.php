@@ -14,7 +14,8 @@ class User extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'user_email', 'display_name', 'role_id', 'department_id',
-        'is_active', 'line_manager_id', 'signature_image_fullpath'
+        'is_active', 'line_manager_id', 'signature_image_fullpath', 'created_at',
+        'updated_at',    
     ];
 
     protected bool $allowEmptyInserts = false;
