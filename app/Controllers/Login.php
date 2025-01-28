@@ -111,7 +111,7 @@ class Login extends BaseController
         $session = service('session');
 
         $builder = $db->table('users');
-        $builder->select('users.*, departments.department_code, roles.role_code');
+        $builder->select('users.id as user_id, users.*, departments.*, roles.*');
         $builder->join('roles', 'roles.id = users.role_id');
         $builder->join('departments', 'departments.id = users.department_id');
         $builder->where('users.id', $user_id);
@@ -121,11 +121,13 @@ class Login extends BaseController
         $user_data = $query->getRow();
 
         $session_data = [
-            'user_id' => $user_data->id,
+            'user_id' => $user_data->user_id,
             'user_email' => $user_data->user_email,
             'display_name' => $user_data->display_name,
-            'department_code' => $user_data->department_code,
-            'role_code' => $user_data->role_code,
+            'department_id' => $user_data->department_id,
+            'department_name' => $user_data->department_name,
+            'role_id' => $user_data->role_id,
+            'role_name' => $user_data->role_name,
             'line_manager_id' => $user_data->line_manager_id,
             'dashboard_logged_in' => true,
         ];
