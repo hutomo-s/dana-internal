@@ -10,6 +10,7 @@
         <link rel="stylesheet" href="<?= base_url("assets/adminlte/plugins/fontawesome-free/css/all.min.css") ?>">
         <!-- Theme style -->
         <link rel="stylesheet" href="<?= base_url("assets/adminlte/dist/css/adminlte.min.css") ?>">
+        <?= $this->renderSection('stylesheet_tags') ?>
     </head>
     <body class="hold-transition sidebar-mini">
         <div class="wrapper">
