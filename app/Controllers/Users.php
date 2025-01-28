@@ -87,7 +87,6 @@ class Users extends BaseController
      */
     public function store()
     {
-        $db = \Config\Database::connect();
         $user_model = new \App\Models\User();
         $request = request();
         $validation = service('validation');
