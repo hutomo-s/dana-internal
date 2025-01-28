@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use CodeIgniter\API\ResponseTrait;
+use CodeIgniter\I18n\Time;
 
 class Users extends BaseController
 {
@@ -90,16 +91,27 @@ class Users extends BaseController
         $user_model = new \App\Models\User();
         $request = request();
         $validation = service('validation');
+        helper('upload_file');
 
         $post_data = $request->getPost();
-        
+
         $rules = [
             'user_email' => 'required|max_length[120]|valid_email|is_unique[users.user_email]',
             'display_name' => 'required|max_length[255]|alpha_space',
             'role_id' => 'required|integer',
             'department_id' => 'required|integer',
-            'line_manager_id' => 'required|integer',
+            'line_manager_id' => 'permit_empty|integer',
             'is_active' => 'required|integer|in_list[0,1]',
+            'signature_image' => [
+                'label' => 'Signature',
+                'rules' => [
+                    'permit_empty',
+                    'uploaded[signature_image]',
+                    'is_image[signature_image]',
+                    'mime_in[signature_image,image/jpg,image/jpeg,image/gif,image/png,image/webp]',
+                    'max_size[signature_image,2048]',
+                ]
+            ],
         ];
 
         $validation->setRules($rules);
@@ -117,13 +129,22 @@ class Users extends BaseController
             return $this->respond($response, 400);
         }
 
+        $signature_image = $this->request->getFile('signature_image');
+        
+        // upload signature image
+        $signature_image_fullpath = upload_single_file($signature_image);
+
+        $created_at = Time::now()->toDateTimeString();
+
         $user_data = [
             'user_email' => $post_data['user_email'],
             'display_name' => $post_data['display_name'],
             'role_id' => $post_data['role_id'],
             'department_id' => $post_data['department_id'],
-            'line_manager_id' => $post_data['line_manager_id'],
+            'line_manager_id' => $post_data['line_manager_id'] ?? null,
+            'signature_image_fullpath' => $signature_image_fullpath,
             'is_active' => $post_data['is_active'],
+            'created_at' => $created_at,
         ];
 
         $user_model->insert($user_data);

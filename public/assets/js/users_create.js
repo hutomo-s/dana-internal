@@ -1,3 +1,7 @@
+$(function () {
+    bsCustomFileInput.init();
+});
+
 function get_line_manager() {
 
     disable_select_line_manager();

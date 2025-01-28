@@ -39,7 +39,7 @@
             <label for="exampleInputFile">Signature Image</label>
             <div class="input-group">
                 <div class="custom-file">
-                    <input type="file" class="custom-file-input" name="signature_image">
+                    <input type="file" accept="image/*" class="custom-file-input" name="signature_image">
                     <label class="custom-file-label">Choose file</label>
                 </div>
                 <div class="input-group-append">
@@ -79,5 +79,6 @@
 <?= $this->endSection() ?>
 
 <?= $this->section('script_tags') ?>
+<script src="<?= base_url("assets/adminlte/plugins/bs-custom-file-input/bs-custom-file-input.min.js") ?>"></script>
 <script src="<?= base_url("assets/js/users_create.js?v=".ASSET_VERSION) ?>"></script>
 <?= $this->endSection() ?>
