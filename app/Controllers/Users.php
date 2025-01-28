@@ -12,7 +12,23 @@ class Users extends BaseController
 
     public function index()
     {
-        return view('dashboard/users_index');
+        $db = \Config\Database::connect();
+
+        $builder = $db->table('users');
+        $builder->select('users.id as user_id, users.*, departments.*, roles.*');
+        $builder->join('roles', 'roles.id = users.role_id');
+        $builder->join('departments', 'departments.id = users.department_id');
+        $builder->orderBy('users.is_active DESC, departments.department_code ASC');
+
+        $query = $builder->get();
+
+        $users = $query->getResult();
+
+        $data = [
+            'users' => $users,
+        ];
+
+        return view('dashboard/users_index', $data);
     }
 
     public function create()
