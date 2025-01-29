@@ -38,3 +38,29 @@ function authorize_ep_create()
     $return_obj->message = '';
     return $return_obj;
 }
+
+function get_ep_status($status_code)
+{   
+    $all_ep_status = all_ep_status();
+
+    if(!empty($all_ep_status[$status_code]))
+    {
+        return $all_ep_status[$status_code];
+    }
+
+    return '';
+}
+
+function all_ep_status()
+{
+    $data = [
+        'CREATED_BY_REQUESTOR' => 1,
+        'APPROVED_BY_LINE_MANAGER' => 2,
+        'APPROVED_BY_EXCOM_1' => 3,
+        'APPROVED_BY_EXCOM_2' => 4,
+        'APPROVED_BY_CEO' => 5,
+        'SUBMITTED_TO_PROCUREMENT' => 6,
+    ];
+
+    return $data;
+}
