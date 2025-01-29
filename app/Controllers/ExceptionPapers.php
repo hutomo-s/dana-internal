@@ -12,7 +12,16 @@ class ExceptionPapers extends BaseController
 
     public function index()
     {
-        $data = [];
+        $db = \Config\Database::connect();
+
+        $ep_list = $db->table('exception_papers')
+                      ->select('*')
+                      ->get()
+                      ->getResult();
+
+        $data = [
+            'ep_list' => $ep_list,
+        ];
 
         return view('dashboard/ep_index', $data);
     }
