@@ -34,7 +34,7 @@
                     <td><?= $ep->request_due_date ?></td>
                     <td><?= $ep->exception_status ?></td>
                     <td>
-                        View <?= $ep->id ?>
+                        <a href="<?= base_url('dashboard/exception-papers/'.$ep->id) ?>">View</a>
                         <br />
                         <a href="#" target="_blank">Download PDF</a>
                     </td>
