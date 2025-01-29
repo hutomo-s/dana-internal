@@ -37,22 +37,18 @@
 
     <div class="form-group">
         <label>Attachment(s)</label>
-        <div class="input-group mb-2">
-            <div class="custom-file">
-                <input type="file" accept="*" class="custom-file-input" name="reason_file[]">
-                <label class="custom-file-label">Choose file</label>
-            </div>
-        </div>
 
-        <div class="input-group mb-2">
-            <div class="custom-file">
-                <input type="file" accept="*" class="custom-file-input" name="reason_file[]">
-                <label class="custom-file-label">Choose file</label>
+        <div id="reason_attachments">
+            <div class="input-group mb-2">
+                <div class="custom-file">
+                    <input type="file" accept="*" class="custom-file-input" name="reason_file[]">
+                    <label class="custom-file-label">Choose file</label>
+                </div>
             </div>
         </div>
         
         <div>
-            <a href="#" class="btn btn-block btn-default"><i class="fas fa-plus mr-2"></i> Add Attachment</a>
+            <a href="#" id="add_reason_attachment" class="btn btn-block btn-default"><i class="fas fa-plus mr-2"></i> Add Attachment</a>
         </div>
     </div>
 
@@ -63,22 +59,18 @@
 
     <div class="form-group">
         <label>Attachment(s)</label>
-        <div class="input-group">
-            <div class="custom-file mb-2">
-                <input type="file" accept="*" class="custom-file-input" name="impact_file[]">
-                <label class="custom-file-label">Choose file</label>
-            </div>
-        </div>
 
-        <div class="input-group">
-            <div class="custom-file mb-2">
-                <input type="file" accept="*" class="custom-file-input" name="impact_file[]">
-                <label class="custom-file-label">Choose file</label>
+        <div id="impact_attachments">
+            <div class="input-group">
+                <div class="custom-file mb-2">
+                    <input type="file" accept="*" class="custom-file-input" name="impact_file[]">
+                    <label class="custom-file-label">Choose file</label>
+                </div>
             </div>
         </div>
 
         <div>
-            <a href="#" class="btn btn-block btn-default"><i class="fas fa-plus mr-2"></i> Add Attachment</a>
+            <a href="#" id="add_impact_attachment" class="btn btn-block btn-default"><i class="fas fa-plus mr-2"></i> Add Attachment</a>
         </div>
     </div>
 

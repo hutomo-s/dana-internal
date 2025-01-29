@@ -10,6 +10,40 @@ $("input[name=request_due_date]").datepicker({
   minDate: today
 });
 
+$("#add_impact_attachment").on("click", function(e) {
+  e.preventDefault();
+
+  var input_name = 'impact_file[]';
+
+  var input_group = `<div class="input-group">
+      <div class="custom-file mb-2">
+          <input type="file" accept="*" class="custom-file-input" name="${input_name}">
+          <label class="custom-file-label">Choose file</label>
+      </div>
+  </div>`;
+
+  $("#impact_attachments").append(input_group);
+
+  bsCustomFileInput.init();
+});
+
+$("#add_reason_attachment").on("click", function(e) {
+  e.preventDefault();
+
+  var input_name = 'reason_file[]';
+
+  var input_group = `<div class="input-group">
+      <div class="custom-file mb-2">
+          <input type="file" accept="*" class="custom-file-input" name="${input_name}">
+          <label class="custom-file-label">Choose file</label>
+      </div>
+  </div>`;
+
+  $("#reason_attachments").append(input_group);
+
+  bsCustomFileInput.init();
+});
+
 $("#ep-create-form").on("submit", function (e) {
   // stop form from submitting normally
   e.preventDefault();
