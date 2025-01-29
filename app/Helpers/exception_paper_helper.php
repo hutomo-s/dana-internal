@@ -66,6 +66,46 @@ function all_ep_status()
     return $data;
 }
 
+function build_ep_approval_data($ep_id, $current_status, $currency, $amout)
+{
+    $db = \Config\Database::connect();
+    helper('exception_paper');
+    $session = service('session');
+    
+    if($current_status === 1)
+    {
+        // from exception_paper_helper
+        $next_status = get_ep_status('APPROVED_BY_LINE_MANAGER');
+    
+        // same as users.department_id
+        $department_id_approver = $session->get('department_id');
+        
+        $role = $db->table('roles')
+                ->select('id')
+                ->where('role_code', 'LINE_MANAGER')
+                ->get(1)
+                ->getRow();
+        
+        // role id for line manager
+        $role_id_approver = $role->id;
+
+        // line_manager_id for current user
+        $user_id_approver = $session->get('line_manager_id');
+    }
+
+    $ep_approval_data = [
+        'exception_paper_id' => $ep_id,
+        'current_status' => $current_status,
+        'next_status' => $next_status,
+        'department_id_approver' => $department_id_approver,
+        'role_id_approver' => $role_id_approver,
+        'user_id_approver' => $user_id_approver ?? null,
+        'is_pending' => true,
+    ];
+
+    return $ep_approval_data;
+}
+
 function build_ep_history_data($ep_id, $previous_status, $current_status)
 {
     $session = service('session');
