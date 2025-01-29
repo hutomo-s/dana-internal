@@ -1,4 +1,5 @@
 <?php
+use CodeIgniter\I18n\Time;
 
 function authorize_ep_create()
 {
@@ -63,4 +64,23 @@ function all_ep_status()
     ];
 
     return $data;
+}
+
+function build_ep_history_data($ep_id, $previous_status, $current_status)
+{
+    $session = service('session');
+
+    $updated_at = Time::now()->toDateTimeString();
+
+    $updated_by = $session->get('user_id');
+
+    $ep_history_data = [
+        'exception_paper_id' => $ep_id,
+        'previous_status' => $previous_status,
+        'current_status' => $current_status,
+        'updated_by' => $updated_by,
+        'updated_at' => $updated_at,
+    ];
+
+    return $ep_history_data;
 }
