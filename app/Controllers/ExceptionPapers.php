@@ -105,11 +105,11 @@ class ExceptionPapers extends BaseController
         $rules = [
             'purchase_title' => [
                 'label' => 'Purchase Title',
-                'rules' => 'required|max_length[255]|min_length[5]',
+                'rules' => 'required|max_length[255]|min_length[1]',
             ],
             'pr_number' => [
                 'label' => 'PR Number',
-                'rules' => 'permit_empty|max_length[255]|min_length[5]',
+                'rules' => 'permit_empty|max_length[255]|min_length[1]',
             ],
             'exception_reason' => [
                 'label' => 'Exception Reason',
