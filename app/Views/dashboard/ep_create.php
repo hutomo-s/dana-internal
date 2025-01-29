@@ -22,12 +22,12 @@
 
     <div class="form-group">
         <label>Purchase Title *</label>
-        <input type="text" class="form-control" name="display_name" autocomplete="off">
+        <input type="text" class="form-control" name="purchase_title" autocomplete="off">
     </div>
 
     <div class="form-group">
         <label>PR Number</label>
-        <input type="text" class="form-control" name="display_name" autocomplete="off">
+        <input type="text" class="form-control" name="pr_number" autocomplete="off">
     </div>
 
     <div class="form-group">
@@ -96,7 +96,7 @@
     <b>Requestor Statement</b>
 
     <div class="form-check">
-        <input type="checkbox" class="form-check-input" id="requestor_statement">
+        <input type="checkbox" class="form-check-input" name="requestor_statement_check">
         <label class="form-check-label">Hereby I declare that this request to justified the urgency, without any conflict of interest to the selected vendor.</label>
     </div>
 
