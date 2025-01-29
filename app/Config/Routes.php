@@ -20,6 +20,8 @@ $routes->group('api', static function($routes) {
     
     $routes->post('users/store', 'Users::store');
 
+    $routes->post('exception-papers/store', 'ExceptionPapers::store');
+
 });
 
 $routes->group('dashboard', ['filter' => [\App\Filters\DashboardAuthentication::class]], static function($routes) {
