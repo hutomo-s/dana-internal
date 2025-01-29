@@ -26,6 +26,40 @@ class ExceptionPapers extends BaseController
         return view('dashboard/ep_index', $data);
     }
 
+    public function waiting_my_approval()
+    {
+        $db = \Config\Database::connect();
+        $session = service('session');
+        $data = [];
+
+        $my_user_id = $session->get('user_id');
+
+        $user = $db->table('users')
+                ->select('users.*, roles.role_code')
+                ->join('roles', 'roles.id = users.role_id')
+                ->where('users.id', $my_user_id)
+                ->get(1)
+                ->getRow();
+
+        $my_role_code = $user->role_code;
+
+        if($my_role_code === 'LINE_MANAGER')
+        {
+            $ep_list = $db->table('exception_paper_approval')
+                          ->select('*')
+                          ->join('exception_papers', 'exception_papers.id = exception_paper_approval.exception_paper_id')
+                          ->where('exception_paper_approval.user_id_approver', $my_user_id)
+                          ->get()
+                          ->getResult();
+
+            $data['ep_list'] = $ep_list;
+
+            return view('dashboard/ep_waiting_my_approval', $data);
+        }
+
+        return view('dashboard/ep_waiting_my_approval', $data);
+    }
+
     public function create()
     {
         helper('exception_paper');

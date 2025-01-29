@@ -30,6 +30,8 @@ $routes->group('dashboard', ['filter' => [\App\Filters\DashboardAuthentication::
     
     $routes->get('users/create', 'Users::create');
 
+    $routes->get('exception-papers/waiting-my-approval', 'ExceptionPapers::waiting_my_approval');
+
     $routes->get('exception-papers', 'ExceptionPapers::index');
     
     $routes->get('exception-papers/create', 'ExceptionPapers::create');

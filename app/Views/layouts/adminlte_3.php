@@ -113,6 +113,13 @@
                                 </a>
                                 <ul class="nav nav-treeview">
                                     <li class="nav-item">
+                                        <a href="<?= base_url('dashboard/exception-papers/waiting-my-approval'); ?>" class="nav-link">
+                                        <p>Waiting My Approval</p>
+                                        </a>
+                                    </li>
+                                </ul>
+                                <ul class="nav nav-treeview">
+                                    <li class="nav-item">
                                         <a href="<?= base_url('dashboard/exception-papers'); ?>" class="nav-link">
                                         <p>All Exception Papers</p>
                                         </a>
