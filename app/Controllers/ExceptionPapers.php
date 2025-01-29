@@ -127,6 +127,10 @@ class ExceptionPapers extends BaseController
                 'label' => 'Cost to Process',
                 'rules' => 'required|integer'
             ],
+            'request_due_date' => [
+                'label' => 'Due Date',
+                'rules' => 'valid_date[Y-m-d]',
+            ],
             'requestor_statement_check' => [
                 'label' => 'Requestor Statement',
                 'rules' => 'required|in_list[on]',
