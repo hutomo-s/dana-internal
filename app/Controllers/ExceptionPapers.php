@@ -42,11 +42,12 @@ class ExceptionPapers extends BaseController
      */
     public function store()
     {
-        helper('exception_paper');
-        
+        $db = \Config\Database::connect();
+        $ep_model = new \App\Models\ExceptionPaper();
+        $ep_approval_model = new \App\Models\EPApproval();
         $request = request();
         $validation = service('validation');
-        $session = service('session');
+        helper('exception_paper');
 
         // from exception_paper_helper
         $authorize_ep_create = authorize_ep_create();
@@ -81,23 +82,51 @@ class ExceptionPapers extends BaseController
             return $this->respond($response, 400);
         }
 
-        $requestor_id = $session->get('user_id');
-        $created_at = Time::now()->toDateTimeString();
+        $ep_data = $this->build_ep_data($post_data);
 
-        // from exception_paper_helper
-        $exception_status = get_ep_status('CREATED_BY_REQUESTOR');
+        $db->transStart();
+        
+        // insert to table `exception_papers`
+        $ep_model->insert($ep_data);
 
-        $exception_paper_data = [
-            'requestor_id' => $requestor_id,
-            'created_at' => $created_at,
-            'exception_status' => $exception_status,
-        ];
+        $ep_id = $ep_model->getInsertID();
 
         // upload file
         $files = $this->request->getFiles();
-        $attachments = $this->upload_attachments($files);
+        $ep_attachments = $this->upload_attachments($files, $ep_id);
 
-        $user_id_approver = $session->get('line_manager_id');
+        // insert to table `exception_paper_attachments`
+        if(count($ep_attachments) > 0)
+        {
+            $db->table('exception_paper_attachments')
+               ->insertBatch($ep_attachments);
+        }
+
+        $ep_approval_data = $this->build_ep_approval_data($ep_id);
+        
+        // insert to table `exception_paper_approval`
+        $ep_approval_model->insert($ep_approval_data);
+
+        $current_status = $ep_data['exception_status'];
+
+        // from exception_paper_helper
+        $ep_history_data = build_ep_history_data($ep_id, 0, $current_status);
+
+        // insert to table `exception_paper_history`
+        $db->table('exception_paper_history')
+          ->insert($ep_history_data);
+
+        $db->transComplete();
+
+        // redirect to /dashboard/exception-papers
+        $response = [
+            'success' => true,
+            'message' => 'Exception Paper Created Successfully',
+            'redirect_url' => base_url('dashboard/exception-papers'),
+            'error_messages' => [],
+        ];
+
+        return $this->respond($response, 200);
     }
 
     private function validation_rules()
@@ -151,7 +180,33 @@ class ExceptionPapers extends BaseController
         return $rules;
     }
 
-    private function upload_attachments($files)
+    private function build_ep_data($post_data)
+    {
+        $session = service('session');
+        helper('exception_paper');
+
+        $requestor_id = $session->get('user_id');
+        $created_at = Time::now()->toDateTimeString();
+        $exception_status = get_ep_status('CREATED_BY_REQUESTOR');
+
+        $ep_data = [
+            'requestor_id' => $requestor_id,
+            'created_at' => $created_at,
+            'request_due_date' => $post_data['request_due_date'],
+            'purchase_title' => $post_data['purchase_title'],
+            'pr_number' => $post_data['pr_number'],
+            'exception_reason' => $post_data['exception_reason'],
+            'exception_impact' => $post_data['exception_impact'],
+            'request_cost_currency' => $post_data['request_cost_currency'],
+            'request_cost_amount' => $post_data['request_cost_amount'],
+            'exception_status' => $exception_status,
+            'is_complete' => false,
+        ];
+
+        return $ep_data;
+    }
+
+    private function upload_attachments($files, $ep_id)
     {
         helper('upload_file');
 
@@ -164,6 +219,7 @@ class ExceptionPapers extends BaseController
             if($fullpath)
             {
                 $attachment = [
+                    'exception_paper_id' => $ep_id,
                     'attachment_category' => 'reason',
                     'attachment_fullpath' => $fullpath,
                 ];
@@ -179,6 +235,7 @@ class ExceptionPapers extends BaseController
             if($fullpath)
             {
                 $attachment = [
+                    'exception_paper_id' => $ep_id,
                     'attachment_category' => 'impact',
                     'attachment_fullpath' => $fullpath,
                 ];
@@ -188,5 +245,43 @@ class ExceptionPapers extends BaseController
         }
 
         return $attachments;
+    }
+
+    private function build_ep_approval_data($ep_id)
+    {
+        $db = \Config\Database::connect();
+        helper('exception_paper');
+        $session = service('session');
+
+        // from exception_paper_helper
+        $exception_status = get_ep_status('CREATED_BY_REQUESTOR');
+        $next_status = get_ep_status('APPROVED_BY_LINE_MANAGER');
+        
+        // same as users.department_id
+        $department_id_approver = $session->get('department_id');
+        
+        $role = $db->table('roles')
+                   ->select('id')
+                   ->where('role_code', 'LINE_MANAGER')
+                   ->get(1)
+                   ->getRow();
+        
+        // role id for line manager
+        $role_id_approver = $role->id;
+
+        // line_manager_id for current user
+        $user_id_approver = $session->get('line_manager_id');
+
+        $ep_approval_data = [
+            'exception_paper_id' => $ep_id,
+            'current_status' => $exception_status,
+            'next_status' => $next_status,
+            'department_id_approver' => $department_id_approver,
+            'role_id_approver' => $role_id_approver,
+            'user_id_approver' => $user_id_approver,
+            'is_pending' => true,
+        ];
+
+        return $ep_approval_data;
     }
 }
