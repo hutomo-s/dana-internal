@@ -10,6 +10,28 @@ $("input[name=request_due_date]").datepicker({
   minDate: today
 });
 
+$(document).on("input", ".number-separator", function (e) {
+  if (/^[0-9.,]+$/.test($(this).val())) {
+    $(this).val(
+      parseFloat($(this).val().replace(/,/g, "")).toLocaleString('en')
+    );
+  } else {
+    $(this).val(
+      $(this)
+        .val()
+        .substring(0, $(this).val().length - 1)
+    );
+  }
+});
+
+$("#request_cost_amount_input").on("change", function(e) {
+  var value = e.target.value;
+
+  var original_amount = value.replace(/,(?=\d{3})/g, '');
+
+  $("input[name=request_cost_amount]").val(original_amount);
+});
+
 $("#add_impact_attachment").on("click", function(e) {
   e.preventDefault();
 

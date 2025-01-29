@@ -88,7 +88,8 @@
                 <option value="IDR">IDR</option>
             </select>
         </div>
-            <input type="text" class="form-control">
+            <input type="text" class="form-control number-separator" id="request_cost_amount_input">
+            <input type="hidden" name="request_cost_amount">
         </div>
     </div>
 
