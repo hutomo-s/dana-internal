@@ -102,7 +102,13 @@ class ExceptionPapers extends BaseController
                ->insertBatch($ep_attachments);
         }
 
-        $ep_approval_data = $this->build_ep_approval_data($ep_id);
+        // from exception_paper_helper
+        $ep_approval_data = build_ep_approval_data(
+            $ep_id,
+            $ep_data['exception_status'],
+            $ep_data['request_cost_currency'],
+            $ep_data['request_cost_amount']
+        );
         
         // insert to table `exception_paper_approval`
         $ep_approval_model->insert($ep_approval_data);
@@ -247,41 +253,4 @@ class ExceptionPapers extends BaseController
         return $attachments;
     }
 
-    private function build_ep_approval_data($ep_id)
-    {
-        $db = \Config\Database::connect();
-        helper('exception_paper');
-        $session = service('session');
-
-        // from exception_paper_helper
-        $exception_status = get_ep_status('CREATED_BY_REQUESTOR');
-        $next_status = get_ep_status('APPROVED_BY_LINE_MANAGER');
-        
-        // same as users.department_id
-        $department_id_approver = $session->get('department_id');
-        
-        $role = $db->table('roles')
-                   ->select('id')
-                   ->where('role_code', 'LINE_MANAGER')
-                   ->get(1)
-                   ->getRow();
-        
-        // role id for line manager
-        $role_id_approver = $role->id;
-
-        // line_manager_id for current user
-        $user_id_approver = $session->get('line_manager_id');
-
-        $ep_approval_data = [
-            'exception_paper_id' => $ep_id,
-            'current_status' => $exception_status,
-            'next_status' => $next_status,
-            'department_id_approver' => $department_id_approver,
-            'role_id_approver' => $role_id_approver,
-            'user_id_approver' => $user_id_approver,
-            'is_pending' => true,
-        ];
-
-        return $ep_approval_data;
-    }
 }
