@@ -178,6 +178,23 @@ class ExceptionPapers extends BaseController
         return $this->respond($response, 200);
     }
 
+    public function show($ep_id)
+    {
+        $db = \Config\Database::connect();
+
+        $ep_data = $db->table('exception_papers')
+                      ->select('*')
+                      ->where('exception_papers.id', $ep_id)
+                      ->get(1)
+                      ->getRow();
+        
+        $data = [
+            'ep_data' => $ep_data,
+        ];
+
+        return view('dashboard/ep_show', $data);
+    }
+
     private function validation_rules()
     {
         $rules = [
