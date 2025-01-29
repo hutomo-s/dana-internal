@@ -120,7 +120,7 @@ class ExceptionPapers extends BaseController
 
         // insert to table `exception_paper_history`
         $db->table('exception_paper_history')
-          ->insert($ep_history_data);
+           ->insert($ep_history_data);
 
         $db->transComplete();
 
