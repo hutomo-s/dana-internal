@@ -3,6 +3,13 @@
 <?= $this->section('page_title') ?>Exception Paper<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
+
+<?php if($is_need_my_approval === true): ?>
+<div class="alert alert-warning" role="alert">
+    This Exception Paper need your approval.
+</div>
+<?php endif ?>
+
 <div class="card">
     <div class="card-body p-0">
         <table class="table table-bordered">

@@ -177,6 +177,8 @@ class ExceptionPapers extends BaseController
     public function show($ep_id)
     {
         $db = \Config\Database::connect();
+        helper('exception_paper');
+        $session = service('session');
 
         $ep_data = $db->table('exception_papers')
                       ->select('*')
@@ -205,8 +207,14 @@ class ExceptionPapers extends BaseController
         $ep_attachments_impact = array_filter($ep_attachments, function($epa) {
             return $epa->attachment_category === 'impact';
         });
+
+        $my_user_id = $session->get('user_id');
+        
+        // from exception_paper_helper
+        $is_need_my_approval = is_need_my_approval($ep_id, $my_user_id);
         
         $data = [
+            'is_need_my_approval' => $is_need_my_approval,
             'ep_data' => $ep_data,
             'ep_attachments_reason' => $ep_attachments_reason,
             'ep_attachments_impact' => $ep_attachments_impact,
