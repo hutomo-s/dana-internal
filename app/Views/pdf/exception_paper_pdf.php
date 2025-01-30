@@ -52,12 +52,12 @@
         <?php endif ?>
     </tr>
     <tr>
-        <td><img src="<?= $ep_history_list['requestor']['signature'] ?>" style="max-width: 100%; height: auto;"></td>
-        <td><img src="<?= $ep_history_list['line_manager']['signature'] ?>" style="max-width: 100%; height: auto;"></td>
-        <td><img src="<?= $ep_history_list['excom_1']['signature'] ?>" style="max-width: 100%; height: auto;"></td>
-        <td><img src="<?= $ep_history_list['excom_2']['signature'] ?>" style="max-width: 100%; height: auto;"></td>
+        <td><img src="<?= $ep_history_list['requestor']['signature'] ?>" style="max-width: 150px; height: auto;"></td>
+        <td><img src="<?= $ep_history_list['line_manager']['signature'] ?>" style="max-width: 150px; height: auto;"></td>
+        <td><img src="<?= $ep_history_list['excom_1']['signature'] ?>" style="max-width: 150px; height: auto;"></td>
+        <td><img src="<?= $ep_history_list['excom_2']['signature'] ?>" style="max-width: 150px; height: auto;"></td>
         <?php if($ep_history_list['ceo']['name']): ?>
-        <td><img src="<?= $ep_history_list['excom_2']['signature'] ?>" style="max-width: 100%; height: auto;"></td>
+        <td><img src="<?= $ep_history_list['excom_2']['signature'] ?>" style="max-width: 150px; height: auto;"></td>
         <?php endif ?>
     </tr>
     <tr>
