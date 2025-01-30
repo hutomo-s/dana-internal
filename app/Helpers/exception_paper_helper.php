@@ -122,6 +122,7 @@ function build_ep_history_data($ep_id, $previous_status, $current_status)
     ];
 
     return $ep_history_data;
+}
 
 function get_role_code($my_user_id)
 {
@@ -136,4 +137,41 @@ function get_role_code($my_user_id)
 
     return $user->role_code;
 }
+
+function is_need_my_approval($ep_id, $my_user_id)
+{
+    $db = \Config\Database::connect();
+
+    $user_model = new \App\Models\User();
+
+    $user = $user_model->find($my_user_id);
+
+    $department_id_approver = $user['department_id'];
+    $role_id_approver = $user['role_id'];
+
+    $ep_approval_data = $db->table('exception_paper_approval')
+                            ->select('*')
+                            ->where('exception_paper_id', $ep_id)
+                            ->where('department_id_approver', $department_id_approver)
+                            ->where('role_id_approver', $role_id_approver)
+                            ->where('is_pending', true)
+                            ->get(1)
+                            ->getRow();
+    
+    // no need approval if no data found in `exception_paper_approval`
+    if(empty($ep_approval_data))
+    {
+        return false;
+    }
+
+    $user_id_approver = $ep_approval_data->user_id_approver;
+
+    // no need approval if user_id_appover is not match with current user
+    // and user_id_approver is specified
+    if(!empty($user_id_approver) && $user_id_approver != $my_user_id)
+    {
+        return false;
+    }
+
+    return true;
 }
