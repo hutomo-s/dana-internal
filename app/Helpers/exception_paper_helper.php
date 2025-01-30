@@ -69,7 +69,6 @@ function all_ep_status()
 function build_ep_approval_data($ep_id, $current_status, $currency, $amout)
 {
     $db = \Config\Database::connect();
-    helper('exception_paper');
     $session = service('session');
     
     if($current_status === 1)
