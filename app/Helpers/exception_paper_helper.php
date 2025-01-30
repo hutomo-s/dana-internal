@@ -71,7 +71,8 @@ function build_ep_approval_data($ep_id, $current_status, $currency, $amout)
     $db = \Config\Database::connect();
     $session = service('session');
     
-    if($current_status === 1)
+    // current status 1: CREATED_BY_REQUESTOR
+    if($current_status == 1)
     {
         // from exception_paper_helper
         $next_status = get_ep_status('APPROVED_BY_LINE_MANAGER');
@@ -79,14 +80,8 @@ function build_ep_approval_data($ep_id, $current_status, $currency, $amout)
         // same as users.department_id
         $department_id_approver = $session->get('department_id');
         
-        $role = $db->table('roles')
-                ->select('id')
-                ->where('role_code', 'LINE_MANAGER')
-                ->get(1)
-                ->getRow();
-        
         // role id for line manager
-        $role_id_approver = $role->id;
+        $role_id_approver = get_role_id('LINE_MANAGER');
 
         // line_manager_id for current user
         $user_id_approver = $session->get('line_manager_id');
