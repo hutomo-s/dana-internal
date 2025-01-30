@@ -3,13 +3,12 @@
 <?= $this->section('page_title') ?>Exception Paper<?= $this->endSection() ?>
 
 <?= $this->section('content') ?>
-<h4></h4>
 <div class="card">
     <div class="card-body p-0">
         <table class="table table-bordered">
             <tbody>
                 <tr>
-                    <th>Date of Request</th>
+                    <th style="width: 250px;">Date of Request</th>
                     <td><?= $ep_data->created_at ?></td>
                 </tr>
                 <tr>
@@ -79,6 +78,12 @@
             </tbody>
         </table>
     </div>
+</div>
+
+<div class="pt-3">
+    <a href="<?= base_url('dashboard/exception-papers') ?>">
+       <i class="fas fa-long-arrow-alt-left"></i> Back to All Exception Papers
+    </a>
 </div>
 
 <?= $this->endSection() ?>
