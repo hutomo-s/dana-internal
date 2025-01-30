@@ -443,7 +443,8 @@ function generate_pdf_ep($ep_id, $is_html_preview = false)
     $mpdf->Output($fullpath_os, \Mpdf\Output\Destination::FILE);
 
     return [
-        'url' => base_url($fullpath),
+        'full_url' => base_url($fullpath),
         'os_fullpath' => $fullpath_os,
+        'fullpath' => $fullpath,
     ];
 }
