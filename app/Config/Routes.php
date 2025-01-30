@@ -21,6 +21,8 @@ $routes->group('api', static function($routes) {
     $routes->post('users/store', 'Users::store');
 
     $routes->post('exception-papers/store', 'ExceptionPapers::store');
+    
+    $routes->post('exception-papers/approve', 'ExceptionPapers::approve');
 
 });
 

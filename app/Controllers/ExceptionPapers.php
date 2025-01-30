@@ -227,6 +227,100 @@ class ExceptionPapers extends BaseController
         return view('dashboard/ep_show', $data);
     }
 
+    /**
+     * AJAX Call
+     * Method: POST
+     * URL: /api/exception-papers/approve/[ep_id]
+     */
+    public function approve()
+    {
+        $db = \Config\Database::connect();
+        $request = request();
+        $session = service('session');
+        helper('exception_paper');
+        $ep_model = new \App\Models\ExceptionPaper();
+        $ep_approval_model = new \App\Models\EPApproval();
+
+        $my_user_id = $session->get('user_id');
+
+        $post_data = $request->getPost();
+
+        $ep_id = intval($post_data['ep_id']);
+
+        // from exception_paper_helper
+        $check_ep_approval = check_ep_approval($ep_id, $my_user_id);
+        
+        $is_need_my_approval = $check_ep_approval['is_need_my_approval'];
+        
+        $ep_approval_id = $check_ep_approval['ep_approval_id'];
+
+        if($is_need_my_approval === false)
+        {
+            $response = [
+                'success' => false,
+                'message' => 'Error',
+                'error_messages' => [
+                    'You are not eligible to approve this Exception Paper'
+                ],
+            ];
+    
+            return $this->respond($response, 400);
+        }
+        
+        // get value from exception_paper_approval
+        $previous_status = $check_ep_approval['previous_status'];
+        $next_status = $check_ep_approval['next_status'];
+
+        $db->transStart();
+        
+        // update status on exception_paper_approval.is_pending
+        $ep_approval_model->update($ep_approval_id, [
+            'is_pending' => false,
+        ]);
+        
+        // update status on exception_papers.exception_status
+        $ep_model->update($ep_id, [
+            'exception_status' => $next_status,
+        ]);
+
+        $ep_data = $ep_model->find($ep_id);
+
+        // build next approval data
+        // from exception_paper_helper
+        $ep_approval_data = build_ep_approval_data(
+            $ep_id,
+            $ep_data['exception_status'],
+            $ep_data['request_cost_currency'],
+            $ep_data['request_cost_amount']
+        );
+
+        // insert to table `exception_paper_approval`
+        $ep_approval_model->insert($ep_approval_data);
+
+        // from exception_paper_helper
+        $ep_history_data = build_ep_history_data(
+            $ep_id, 
+            $previous_status,
+            $next_status
+        );
+
+        // insert to table `exception_paper_history`
+        $db->table('exception_paper_history')
+           ->insert($ep_history_data);
+
+        $db->transComplete();
+
+        // redirect to /dashboard/exception-papers/[ep_id]
+        $response = [
+            'success' => true,
+            'message' => 'Exception Paper Approved Successfully',
+            'redirect_url' => base_url('dashboard/exception-papers/'.$ep_id),
+            'error_messages' => [],
+        ];
+
+        return $this->respond($response, 200);
+    }
+
     private function validation_rules()
     {
         $rules = [
