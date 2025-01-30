@@ -233,7 +233,7 @@ class ExceptionPapers extends BaseController
     /**
      * AJAX Call
      * Method: POST
-     * URL: /api/exception-papers/approve/[ep_id]
+     * URL: /api/exception-papers/approve
      */
     public function approve()
     {
