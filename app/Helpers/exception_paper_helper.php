@@ -66,6 +66,15 @@ function all_ep_status()
     return $data;
 }
 
+function get_ep_status_by_id($status_id)
+{
+    $all_ep_status = all_ep_status();
+
+    $status_code = array_search($status_id, $all_ep_status);
+
+    return $status_code;
+}
+
 function build_ep_approval_data($ep_id, $current_status, $currency, $amount)
 {
     $db = \Config\Database::connect();
