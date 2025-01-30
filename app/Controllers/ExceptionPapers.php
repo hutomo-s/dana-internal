@@ -214,11 +214,14 @@ class ExceptionPapers extends BaseController
         $check_ep_approval = check_ep_approval($ep_id, $my_user_id);
         $is_need_my_approval = $check_ep_approval['is_need_my_approval'];
         
+        $submit_approval_url = base_url('api/exception-papers/approve');
+
         $data = [
             'is_need_my_approval' => $is_need_my_approval,
             'ep_data' => $ep_data,
             'ep_attachments_reason' => $ep_attachments_reason,
             'ep_attachments_impact' => $ep_attachments_impact,
+            'submit_approval_url' => $submit_approval_url,
         ];
 
         return view('dashboard/ep_show', $data);

@@ -87,10 +87,38 @@
     </div>
 </div>
 
+<div>
+<?php if($is_need_my_approval === true): ?>
+<form id="ep-submit-approval" action="<?= $submit_approval_url ?>" method="POST">
+    <input type="hidden" name="ep_id" value="<?= $ep_data->id ?>">
+    <button type="submit" class="btn btn-primary">Approve</button>
+</form>
+<?php endif ?>
+</div>
+
 <div class="pt-3">
     <a href="<?= base_url('dashboard/exception-papers') ?>">
        <i class="fas fa-long-arrow-alt-left"></i> Back to All Exception Papers
     </a>
 </div>
 
+<div class="modal fade" id="modal-default" data-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-body">
+                <div id="modal-default-body"></div>
+            </div>
+            <div class="modal-footer justify-content-end">
+                <button type="button" class="btn btn-default" data-dismiss="modal">OK</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<?= $this->endSection() ?>
+
+<?= $this->section('script_tags') ?>
+<script src="<?= base_url("assets/js/ep_show.js?v=".ASSET_VERSION) ?>"></script>
 <?= $this->endSection() ?>
