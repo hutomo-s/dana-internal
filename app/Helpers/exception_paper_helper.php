@@ -139,6 +139,19 @@ function get_role_code($my_user_id)
 }
 
 function is_need_my_approval($ep_id, $my_user_id)
+function get_role_id($role_code)
+{
+    $db = \Config\Database::connect();
+
+    $role_data = $db->table('roles')
+               ->select('id')
+               ->where('role_code', $role_code)
+               ->get(1)
+               ->getRow();
+
+    return $role_data->id;
+}
+
 {
     $db = \Config\Database::connect();
 
