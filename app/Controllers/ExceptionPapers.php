@@ -49,6 +49,7 @@ class ExceptionPapers extends BaseController
                           ->select('*')
                           ->join('exception_papers', 'exception_papers.id = exception_paper_approval.exception_paper_id')
                           ->where('exception_paper_approval.user_id_approver', $my_user_id)
+                          ->where('is_pending', true)
                           ->get()
                           ->getResult();
 
