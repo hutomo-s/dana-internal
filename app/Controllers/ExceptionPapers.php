@@ -258,6 +258,7 @@ class ExceptionPapers extends BaseController
         $request = request();
         $session = service('session');
         helper('exception_paper');
+        helper('send_email');
         $ep_model = new \App\Models\ExceptionPaper();
         $ep_approval_model = new \App\Models\EPApproval();
 
@@ -337,14 +338,23 @@ class ExceptionPapers extends BaseController
             
             // generate pdf
             $generate_pdf_ep = generate_pdf_ep($ep_id, $is_html_preview);
-            
+            $fullpath =  $generate_pdf_ep['fullpath']; 
+            $os_fullpath = $generate_pdf_ep['os_fullpath'];         
+
             // send email
+            // from send_email_helper
+            send_email_mailtrap(
+                'procurement@test.dana.id',
+                '[Test] Exception Paper Submitted - '.$ep_id,
+                'Dear Procurement Team, Please kindly check the attachment below. Thank you.',
+                $os_fullpath
+            );
             
             // update exception_papers.generated_pdf_fullpath
             // update exception_papers.exception_status to 6 (SUBMITTED_TO_PROCUREMENT)
             // update exception_papers.is_complete to true
             $ep_model->update($ep_id, [
-                'generated_pdf_fullpath' => $generate_pdf_ep['fullpath'],
+                'generated_pdf_fullpath' => $fullpath,
                 'exception_status' => get_ep_status('SUBMITTED_TO_PROCUREMENT'),
                 'is_complete' => true,
             ]);
