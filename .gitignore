@@ -25,3 +25,9 @@ writable/**/*.db
 writable/**/*.sqlite
 
 php_errors.log
+
+#-------------------------
+# Composer
+#-------------------------
+vendor/
+composer.lock
