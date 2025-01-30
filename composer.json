@@ -15,7 +15,10 @@
         "ext-mbstring": "*",
         "laminas/laminas-escaper": "^2.14",
         "mpdf/mpdf": "8.2.5",
-        "psr/log": "^3.0"
+        "nyholm/psr7": "^1.8",
+        "psr/log": "^3.0",
+        "railsware/mailtrap-php": "^2.1",
+        "symfony/http-client": "^7.2"
     },
     "require-dev": {
         "codeigniter/coding-standard": "^1.7",
@@ -61,6 +64,7 @@
         "preferred-install": "dist",
         "sort-packages": true,
         "allow-plugins": {
+            "php-http/discovery": true
         }
     },
     "scripts": {
