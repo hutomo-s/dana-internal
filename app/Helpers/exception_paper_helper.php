@@ -152,7 +152,6 @@ function get_role_code($my_user_id)
     return $user->role_code;
 }
 
-function is_need_my_approval($ep_id, $my_user_id)
 function get_role_id($role_code)
 {
     $db = \Config\Database::connect();
@@ -166,6 +165,7 @@ function get_role_id($role_code)
     return $role_data->id;
 }
 
+function check_ep_approval($ep_id, $my_user_id)
 {
     $db = \Config\Database::connect();
 
@@ -188,7 +188,12 @@ function get_role_id($role_code)
     // no need approval if no data found in `exception_paper_approval`
     if(empty($ep_approval_data))
     {
-        return false;
+        return [
+            'is_need_my_approval' => false,
+            'ep_approval_id' => null,
+            'previous_status' => null,
+            'next_status' => null,
+        ];
     }
 
     $user_id_approver = $ep_approval_data->user_id_approver;
@@ -197,8 +202,24 @@ function get_role_id($role_code)
     // and user_id_approver is specified
     if(!empty($user_id_approver) && $user_id_approver != $my_user_id)
     {
-        return false;
+        return [
+            'is_need_my_approval' => false,
+            'ep_approval_id' => null,
+            'previous_status' => null,
+            'next_status' => null,
+        ];
     }
 
-    return true;
+    $ep_approval_id = $ep_approval_data->id;
+    
+    $next_status = $ep_approval_data->next_status;
+    
+    $previous_status = $ep_approval_data->current_status;
+
+    return [
+        'is_need_my_approval' => true,
+        'ep_approval_id' => $ep_approval_id,
+        'previous_status' => $previous_status,
+        'next_status' => $next_status,
+    ];
 }

@@ -211,7 +211,8 @@ class ExceptionPapers extends BaseController
         $my_user_id = $session->get('user_id');
         
         // from exception_paper_helper
-        $is_need_my_approval = is_need_my_approval($ep_id, $my_user_id);
+        $check_ep_approval = check_ep_approval($ep_id, $my_user_id);
+        $is_need_my_approval = $check_ep_approval['is_need_my_approval'];
         
         $data = [
             'is_need_my_approval' => $is_need_my_approval,
