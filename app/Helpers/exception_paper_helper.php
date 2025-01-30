@@ -22,7 +22,7 @@ function authorize_ep_create()
     {
         $return_obj = new stdClass;
         $return_obj->is_eligible = false;
-        $return_obj->message = 'Your Role '. $user_data->role_name .' is not eligible to Create an Exception Paper';
+        $return_obj->message = 'Your Role: '. $user_data->role_name .' is not eligible to Create an Exception Paper';
         return $return_obj;
     }
 
