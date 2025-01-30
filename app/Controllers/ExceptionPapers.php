@@ -328,6 +328,29 @@ class ExceptionPapers extends BaseController
         $db->table('exception_paper_history')
            ->insert($ep_history_data);
 
+        $next_status_ep_approval = $ep_approval_data['next_status'];
+
+        // generate pdf and send email to procurement team
+        if($next_status_ep_approval == get_ep_status('SUBMITTED_TO_PROCUREMENT'))
+        {
+            $is_html_preview = false;
+            
+            // generate pdf
+            $generate_pdf_ep = generate_pdf_ep($ep_id, $is_html_preview);
+            
+            // send email
+            
+            // update exception_papers.generated_pdf_fullpath
+            // update exception_papers.exception_status to 6 (SUBMITTED_TO_PROCUREMENT)
+            // update exception_papers.is_complete to true
+            $ep_model->update($ep_id, [
+                'generated_pdf_fullpath' => $generate_pdf_ep['fullpath'],
+                'exception_status' => get_ep_status('SUBMITTED_TO_PROCUREMENT'),
+                'is_complete' => true,
+            ]);
+            
+        }
+
         $db->transComplete();
 
         // redirect to /dashboard/exception-papers/[ep_id]
