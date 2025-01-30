@@ -27,11 +27,11 @@
                             <?= $ep->purchase_title ?>
                             <p>PR Number: <?= $ep->pr_number ?></p>
                         </td>
-                        <td><?= $ep->requestor_id ?></td>
-                        <td><?= $ep->request_cost_currency ?> <?= $ep->request_cost_amount ?></td>
+                        <td><?= $ep->display_name ?></td>
+                        <td><?= $ep->request_cost_currency ?> <?= number_format($ep->request_cost_amount, 2, '.', ',') ?></td>
                         <td><?= $ep->created_at ?></td>
                         <td><?= $ep->request_due_date ?></td>
-                        <td><?= $ep->exception_status ?></td>
+                        <td><?= get_ep_status_by_id($ep->exception_status) ?></td>
                         <td>
                             <a href="<?= base_url('dashboard/exception-papers/'.$ep->id) ?>">View</a>
                         </td>

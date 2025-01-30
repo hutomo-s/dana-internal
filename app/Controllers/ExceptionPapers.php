@@ -12,10 +12,13 @@ class ExceptionPapers extends BaseController
 
     public function index()
     {
+        helper('exception_paper');
+
         $db = \Config\Database::connect();
 
         $ep_list = $db->table('exception_papers')
-                      ->select('*')
+                      ->select('exception_papers.*, users.display_name')
+                      ->join('users', 'users.id = exception_papers.requestor_id')
                       ->get()
                       ->getResult();
 
@@ -46,8 +49,9 @@ class ExceptionPapers extends BaseController
         {
             case 'LINE_MANAGER':
                 $ep_list = $db->table('exception_paper_approval')
-                              ->select('*')
+                              ->select('exception_paper_approval.*, exception_papers.*, users.display_name')
                               ->join('exception_papers', 'exception_papers.id = exception_paper_approval.exception_paper_id')
+                              ->join('users', 'users.id = exception_papers.requestor_id')
                               ->where('exception_paper_approval.user_id_approver', $my_user_id)
                               ->where('is_pending', true)
                               ->get()
@@ -58,8 +62,9 @@ class ExceptionPapers extends BaseController
 
             case 'C_LEVEL':
                 $ep_list = $db->table('exception_paper_approval')
-                              ->select('*')
+                              ->select('exception_paper_approval.*, exception_papers.*, users.display_name')
                               ->join('exception_papers', 'exception_papers.id = exception_paper_approval.exception_paper_id')
+                              ->join('users', 'users.id = exception_papers.requestor_id')
                               ->where('exception_paper_approval.department_id_approver', $my_department_id)
                               ->where('exception_paper_approval.role_id_approver', $my_role_id)
                               ->where('is_pending', true)
@@ -201,7 +206,8 @@ class ExceptionPapers extends BaseController
         $session = service('session');
 
         $ep_data = $db->table('exception_papers')
-                      ->select('*')
+                      ->select('exception_papers.*, users.display_name')
+                      ->join('users', 'users.id = exception_papers.requestor_id')
                       ->where('exception_papers.id', $ep_id)
                       ->get(1)
                       ->getRow();

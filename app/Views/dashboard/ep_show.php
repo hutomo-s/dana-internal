@@ -79,11 +79,15 @@
                     <td><?= $ep_data->request_cost_currency ?> <?= number_format($ep_data->request_cost_amount, 2, '.', ',') ?></td>
                 </tr>
                 <tr>
-                    <th>Exception Paper Status</th>
-                    <td><?= $ep_data->exception_status ?></td>
+                    <th>Requestor Name</th>
+                    <td><?= $ep_data->display_name ?></td>
                 </tr>
                 <tr>
-                    <th>Generated PDF</th>
+                    <th>Exception Paper Status</th>
+                    <td><?= get_ep_status_by_id($ep_data->exception_status) ?></td>
+                </tr>
+                <tr>
+                    <th>Generated PDF (If Submitted to Procurement)</th>
                     <td>
                         <?php if($ep_data->generated_pdf_fullpath): ?>
                             <a href="<?= base_url(($ep_data->generated_pdf_fullpath)) ?>" target="_blank">Download PDF</a>
