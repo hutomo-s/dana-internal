@@ -278,6 +278,7 @@ function check_ep_approval($ep_id, $my_user_id)
         'previous_status' => $previous_status,
         'next_status' => $next_status,
     ];
+}
 
 function rewrite_img_src($fullpath, $is_html_preview = false)
 {
@@ -296,4 +297,135 @@ function rewrite_img_src($fullpath, $is_html_preview = false)
     return $os_fullpath;
 }
 
+function generate_pdf_ep($ep_id, $is_html_preview = false)
+{
+    $db = \Config\Database::connect();
+
+    $ep_data = $db->table('exception_papers')
+                  ->select('*')
+                  ->where('exception_papers.id', $ep_id)
+                  ->get(1)
+                  ->getRow();
+
+    $ep_attachments = $db->table('exception_paper_attachments')
+                         ->select('*')
+                         ->where('exception_paper_id', $ep_id)
+                         ->get()
+                         ->getResult();
+
+    $ep_attachments_reason = array_filter($ep_attachments, function($epa) {
+        return $epa->attachment_category === 'reason';
+    });
+        
+    $ep_attachments_impact = array_filter($ep_attachments, function($epa) {
+        return $epa->attachment_category === 'impact';
+    });
+
+    $ep_history_db = $db->table('exception_paper_history')
+                        ->select('exception_paper_history.*, users.display_name, users.signature_image_fullpath')
+                        ->join('users', 'users.id = exception_paper_history.updated_by', 'left')
+                        ->where('exception_paper_history.exception_paper_id', $ep_id)
+                        ->get()
+                        ->getResult();
+
+    $ep_history_list = [
+        'requestor' => [
+            'name' => '',
+            'signature' => '',
+        ],
+        'line_manager' => [
+            'name' => '',
+            'signature' => '',
+        ],
+        'excom_1' => [
+            'name' => '',
+            'signature' => '',
+        ],
+        'excom_2' => [
+            'name' => '',
+            'signature' => '',
+        ],
+        'ceo' => [
+            'name' => '',
+            'signature' => '',
+        ],
+    ];
+
+    $default_signature_html = base_url('assets/image/automatic_signature.png');
+    
+    $default_signature_os = ROOTPATH.'public/assets/image/automatic_signature.png';
+
+    if($is_html_preview)
+    {
+        $default_signature = $default_signature_html;
+    }
+    else
+    {
+        $default_signature = $default_signature_os;
+    }
+
+    foreach($ep_history_db as $ephdb)
+    {
+        $current_status = $ephdb->current_status;
+
+        switch($current_status)
+        {
+            case 1:
+                $ep_history_list['requestor']['name'] = $ephdb->display_name;
+                $ep_history_list['requestor']['signature'] = rewrite_img_src($ephdb->signature_image_fullpath, $is_html_preview) ?? $default_signature;
+            break;
+
+            case 2:
+                $ep_history_list['line_manager']['name'] = $ephdb->display_name;
+                $ep_history_list['line_manager']['signature'] = rewrite_img_src($ephdb->signature_image_fullpath, $is_html_preview) ?? $default_signature;
+            break;
+
+            case 3:
+                $ep_history_list['excom_1']['name'] = $ephdb->display_name;
+                $ep_history_list['excom_1']['signature'] = rewrite_img_src($ephdb->signature_image_fullpath, $is_html_preview) ?? $default_signature;
+            break;
+
+            case 4:
+                $ep_history_list['excom_2']['name'] = $ephdb->display_name;
+                $ep_history_list['excom_2']['signature'] = rewrite_img_src($ephdb->signature_image_fullpath, $is_html_preview) ?? $default_signature;
+            break;
+
+            case 5:
+                $ep_history_list['ceo']['name'] = $ephdb->display_name;
+                $ep_history_list['ceo']['signature'] = rewrite_img_src($ephdb->signature_image_fullpath, $is_html_preview) ?? $default_signature;
+            break;
+        }
+    }
+
+    $data = [
+        'ep_data' => $ep_data,
+        'ep_attachments_reason' => $ep_attachments_reason,
+        'ep_attachments_impact' => $ep_attachments_impact,
+        'ep_history_list' => $ep_history_list,
+    ];
+    
+    if($is_html_preview)
+    {
+        return view('pdf/exception_paper_pdf', $data);
+    }
+
+    $mpdf = new \Mpdf\Mpdf();
+
+    $html_content = view('pdf/exception_paper_pdf', $data);
+    
+    $mpdf->WriteHTML($html_content);
+
+    $target_folder_os = ROOTPATH.'public/uploads/'.date('Y').'/'.date('m');
+
+    $filename = 'test1.pdf';
+
+    $fullpath_os = $target_folder_os.'/'.$filename;
+
+    $target_folder_path = '/uploads/'.date('Y').'/'.date('m');
+ 
+    $fullpath = $target_folder_path.'/'.$filename;
+
+    $mpdf->Output($fullpath_os, \Mpdf\Output\Destination::FILE);
+
+    return base_url($fullpath);
 }
