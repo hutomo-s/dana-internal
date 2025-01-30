@@ -30,18 +30,13 @@ class ExceptionPapers extends BaseController
     {
         $db = \Config\Database::connect();
         $session = service('session');
+        helper('exception_paper');
+
         $data = [];
 
         $my_user_id = $session->get('user_id');
 
-        $user = $db->table('users')
-                ->select('users.*, roles.role_code')
-                ->join('roles', 'roles.id = users.role_id')
-                ->where('users.id', $my_user_id)
-                ->get(1)
-                ->getRow();
-
-        $my_role_code = $user->role_code;
+        $my_role_code = get_role_code($my_user_id);
 
         if($my_role_code === 'LINE_MANAGER')
         {
