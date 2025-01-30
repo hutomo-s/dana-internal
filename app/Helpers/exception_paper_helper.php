@@ -406,7 +406,9 @@ function generate_pdf_ep($ep_id, $is_html_preview = false)
     
     if($is_html_preview)
     {
-        return view('pdf/exception_paper_pdf', $data);
+        return [
+            'html_content' => view('pdf/exception_paper_pdf', $data)
+        ];
     }
 
     $mpdf = new \Mpdf\Mpdf();
@@ -417,7 +419,7 @@ function generate_pdf_ep($ep_id, $is_html_preview = false)
 
     $target_folder_os = ROOTPATH.'public/uploads/'.date('Y').'/'.date('m');
 
-    $filename = 'test1.pdf';
+    $filename = 'epform_'. $ep_id .'.pdf';
 
     $fullpath_os = $target_folder_os.'/'.$filename;
 
@@ -427,5 +429,8 @@ function generate_pdf_ep($ep_id, $is_html_preview = false)
 
     $mpdf->Output($fullpath_os, \Mpdf\Output\Destination::FILE);
 
-    return base_url($fullpath);
+    return [
+        'url' => base_url($fullpath),
+        'os_fullpath' => $fullpath_os,
+    ];
 }
