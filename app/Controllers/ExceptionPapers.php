@@ -36,6 +36,10 @@ class ExceptionPapers extends BaseController
 
         $my_user_id = $session->get('user_id');
 
+        $my_role_id = $session->get('role_id');
+        
+        $my_department_id = $session->get('department_id');
+
         $my_role_code = get_role_code($my_user_id);
 
         switch($my_role_code)
@@ -45,6 +49,19 @@ class ExceptionPapers extends BaseController
                               ->select('*')
                               ->join('exception_papers', 'exception_papers.id = exception_paper_approval.exception_paper_id')
                               ->where('exception_paper_approval.user_id_approver', $my_user_id)
+                              ->where('is_pending', true)
+                              ->get()
+                              ->getResult();
+
+                $data['ep_list'] = $ep_list;
+            break;
+
+            case 'C_LEVEL':
+                $ep_list = $db->table('exception_paper_approval')
+                              ->select('*')
+                              ->join('exception_papers', 'exception_papers.id = exception_paper_approval.exception_paper_id')
+                              ->where('exception_paper_approval.department_id_approver', $my_department_id)
+                              ->where('exception_paper_approval.role_id_approver', $my_role_id)
                               ->where('is_pending', true)
                               ->get()
                               ->getResult();
