@@ -67,3 +67,8 @@
 #--------------------------------------------------------------------
 
 # logger.threshold = 4
+
+# mailtrap
+
+MAILTRAP_API_KEY=
+MAILTRAP_INBOX_ID=
