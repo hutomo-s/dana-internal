@@ -148,6 +148,19 @@ function build_ep_approval_data($ep_id, $current_status, $currency, $amount)
             $is_pending = false;
         }
     }
+    // current status 5: APPROVED_BY_CEO
+    else if($current_status == 5)
+    {
+        $next_status = get_ep_status('SUBMITTED_TO_PROCUREMENT');
+            
+        // department id should be PROCUREMENT
+        $department_id_approver = get_department_id('PROCUREMENT');
+
+        // role_id can be any role
+        $role_id_approver = 0;
+
+        $is_pending = false;
+    }
 
     $ep_approval_data = [
         'exception_paper_id' => $ep_id,
