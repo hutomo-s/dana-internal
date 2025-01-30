@@ -66,7 +66,7 @@ function all_ep_status()
     return $data;
 }
 
-function build_ep_approval_data($ep_id, $current_status, $currency, $amout)
+function build_ep_approval_data($ep_id, $current_status, $currency, $amount)
 {
     $db = \Config\Database::connect();
     $session = service('session');
