@@ -1,6 +1,6 @@
 <h1>Exception Paper</h1>
 
-<p>Date of Request: <?= $ep_data->created_at ?></p>
+<p>Date of Request: <?= date('Y-m-d', strtotime($ep_data->created_at)) ?></p>
 
 <p>Purchase Title: <?= $ep_data->purchase_title ?></p>
 
@@ -14,7 +14,7 @@
     <?php foreach($ep_attachments_reason as $epar): ?>
         <li>
             <a href="<?= base_url($epar->attachment_fullpath) ?>" target="_blank">
-                <?= $epar->attachment_fullpath ?>
+                <?= base_url($epar->attachment_fullpath) ?>
             </a>
         </li>
     <?php endforeach; ?>
@@ -28,7 +28,7 @@
     <?php foreach($ep_attachments_impact as $epai): ?>
         <li>
             <a href="<?= base_url($epai->attachment_fullpath) ?>" target="_blank">
-                <?= $epai->attachment_fullpath ?>
+                <?= base_url($epai->attachment_fullpath) ?>
             </a>
         </li>
     <?php endforeach; ?>
@@ -36,7 +36,7 @@
 
 <p>Due Date for the ordering confirmation: <?= $ep_data->request_due_date ?></p>
 
-<p>Cost to proceed the order: <?= $ep_data->request_cost_currency ?> <?= $ep_data->request_cost_amount ?></p>
+<p>Cost to proceed the order: <?= $ep_data->request_cost_currency ?> <?= number_format($ep_data->request_cost_amount, 2, '.', ',') ?></p>
 
 <p><i>Requestor Statement: </i></p>
 <p><i>Hereby I declare that this request <u>to justify</u> the urgency, without any conflict of interest to the selected vendor.</i></p>
