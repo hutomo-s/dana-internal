@@ -82,6 +82,16 @@
                     <th>Exception Paper Status</th>
                     <td><?= $ep_data->exception_status ?></td>
                 </tr>
+                <tr>
+                    <th>Generated PDF</th>
+                    <td>
+                        <?php if($ep_data->generated_pdf_fullpath): ?>
+                            <a href="<?= base_url(($ep_data->generated_pdf_fullpath)) ?>" target="_blank">Download PDF</a>
+                        <?php else: ?>
+                            -
+                        <?php endif; ?>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

@@ -36,7 +36,9 @@
                     <td>
                         <a href="<?= base_url('dashboard/exception-papers/'.$ep->id) ?>">View</a>
                         <br />
-                        <a href="#" target="_blank">Download PDF</a>
+                        <?php if($ep->generated_pdf_fullpath): ?>
+                            <a href="<?= base_url(($ep->generated_pdf_fullpath)) ?>" target="_blank">Download PDF</a>
+                        <?php endif; ?>
                     </td>
                 </tr>
                 <?php endforeach; ?>
