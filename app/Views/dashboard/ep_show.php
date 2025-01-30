@@ -30,6 +30,19 @@
                     <th colspan="2">Attachment(s)</th>
                 </tr>
                 <tr>
+                    <td colspan="2">
+                        <ul>
+                        <?php foreach($ep_attachments_reason as $epar): ?>
+                            <li>
+                                <a href="<?= base_url($epar->attachment_fullpath) ?>" target="_blank">
+                                    <?= $epar->attachment_fullpath ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                        </ul>
+                    </td>
+                </tr>
+                <tr>
                     <th colspan="2">Impact to DANA as Organization if we are failed to perform the agreement as soon as possible</th>
                 </tr>
                 <tr>
@@ -37,6 +50,19 @@
                 </tr>
                 <tr>
                     <th colspan="2">Attachment(s)</th>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <ul>
+                        <?php foreach($ep_attachments_impact as $epai): ?>
+                            <li>
+                                <a href="<?= base_url($epai->attachment_fullpath) ?>" target="_blank">
+                                    <?= $epai->attachment_fullpath ?>
+                                </a>
+                            </li>
+                        <?php endforeach; ?>
+                        </ul>
+                    </td>
                 </tr>
                 <tr>
                     <th>Due Date for the ordering confirmation</th>

@@ -188,9 +188,33 @@ class ExceptionPapers extends BaseController
                       ->where('exception_papers.id', $ep_id)
                       ->get(1)
                       ->getRow();
+
+        // 404
+        if(empty($ep_data))
+        {
+            echo 'Exception Paper ID '.$ep_id.' is not found.';
+            return;
+        }
+        
+        // show attachments
+        $ep_attachments = $db->table('exception_paper_attachments')
+                             ->select('*')
+                             ->where('exception_paper_id', $ep_id)
+                             ->get()
+                             ->getResult();
+        
+        $ep_attachments_reason = array_filter($ep_attachments, function($epa) {
+            return $epa->attachment_category === 'reason';
+        });
+
+        $ep_attachments_impact = array_filter($ep_attachments, function($epa) {
+            return $epa->attachment_category === 'impact';
+        });
         
         $data = [
             'ep_data' => $ep_data,
+            'ep_attachments_reason' => $ep_attachments_reason,
+            'ep_attachments_impact' => $ep_attachments_impact,
         ];
 
         return view('dashboard/ep_show', $data);
