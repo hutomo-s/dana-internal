@@ -70,6 +70,9 @@ function build_ep_approval_data($ep_id, $current_status, $currency, $amount)
 {
     $db = \Config\Database::connect();
     $session = service('session');
+
+    // default value for is_pending
+    $is_pending = true;
     
     // current status 1: CREATED_BY_REQUESTOR
     if($current_status == 1)
@@ -117,6 +120,34 @@ function build_ep_approval_data($ep_id, $current_status, $currency, $amount)
         // approver role is C_LEVEL
         $role_id_approver = get_role_id('C_LEVEL');
     }
+    // current status 4: APPROVED_BY_EXCOM_2
+    else if($current_status == 4)
+    {
+        // if the cost proceed the order > IDR 200 000 000
+        // need approval from CEO
+        if($currency == 'IDR' && $amount > 200000000)
+        {
+            $next_status = get_ep_status('APPROVED_BY_CEO');
+            
+            // department id should be EXECUTIVE
+            $department_id_approver = get_department_id('EXECUTIVE');
+
+            // approver role is C_LEVEL
+            $role_id_approver = get_role_id('C_LEVEL');
+        }
+        else
+        {
+            $next_status = get_ep_status('SUBMITTED_TO_PROCUREMENT');
+            
+            // department id should be PROCUREMENT
+            $department_id_approver = get_department_id('PROCUREMENT');
+
+            // role_id can be any role
+            $role_id_approver = 0;
+
+            $is_pending = false;
+        }
+    }
 
     $ep_approval_data = [
         'exception_paper_id' => $ep_id,
@@ -125,7 +156,7 @@ function build_ep_approval_data($ep_id, $current_status, $currency, $amount)
         'department_id_approver' => $department_id_approver,
         'role_id_approver' => $role_id_approver,
         'user_id_approver' => $user_id_approver ?? null,
-        'is_pending' => true,
+        'is_pending' => $is_pending,
     ];
 
     return $ep_approval_data;
