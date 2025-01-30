@@ -86,6 +86,25 @@ function build_ep_approval_data($ep_id, $current_status, $currency, $amout)
         // line_manager_id for current user
         $user_id_approver = $session->get('line_manager_id');
     }
+    // current status 2: APPROVED_BY_LINE_MANAGER
+    else if($current_status == 2)
+    {
+        // from exception_paper_helper
+        $next_status = get_ep_status('APPROVED_BY_EXCOM_1');
+
+        $ep_data = $db->table('exception_papers')
+                      ->select('exception_papers.requestor_id, users.department_id as department_id')
+                      ->join('users', 'users.id = exception_papers.requestor_id')
+                      ->where('exception_papers.id', $ep_id)
+                      ->get()
+                      ->getRow();
+        
+        // same as users.department_id
+        $department_id_approver = $ep_data->department_id;
+    
+        // approver role is C_LEVEL
+        $role_id_approver = get_role_id('C_LEVEL');
+    }
 
     $ep_approval_data = [
         'exception_paper_id' => $ep_id,
