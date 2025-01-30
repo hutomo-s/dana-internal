@@ -38,19 +38,22 @@ class ExceptionPapers extends BaseController
 
         $my_role_code = get_role_code($my_user_id);
 
-        if($my_role_code === 'LINE_MANAGER')
+        switch($my_role_code)
         {
-            $ep_list = $db->table('exception_paper_approval')
-                          ->select('*')
-                          ->join('exception_papers', 'exception_papers.id = exception_paper_approval.exception_paper_id')
-                          ->where('exception_paper_approval.user_id_approver', $my_user_id)
-                          ->where('is_pending', true)
-                          ->get()
-                          ->getResult();
+            case 'LINE_MANAGER':
+                $ep_list = $db->table('exception_paper_approval')
+                              ->select('*')
+                              ->join('exception_papers', 'exception_papers.id = exception_paper_approval.exception_paper_id')
+                              ->where('exception_paper_approval.user_id_approver', $my_user_id)
+                              ->where('is_pending', true)
+                              ->get()
+                              ->getResult();
 
-            $data['ep_list'] = $ep_list;
+                $data['ep_list'] = $ep_list;
+            break;
 
-            return view('dashboard/ep_waiting_my_approval', $data);
+            default:
+                $data['ep_list'] = [];
         }
 
         return view('dashboard/ep_waiting_my_approval', $data);
