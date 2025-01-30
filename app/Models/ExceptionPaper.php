@@ -15,7 +15,7 @@ class ExceptionPaper extends Model
     protected $allowedFields    = [
         'requestor_id', 'created_at', 'request_due_date', 'purchase_title',
         'pr_number', 'exception_reason', 'exception_impact', 'request_cost_currency',
-        'request_cost_amount', 'exception_status', 'is_complete',
+        'request_cost_amount', 'exception_status', 'is_complete', 'generated_pdf_fullpath',
     ];
 
     protected bool $allowEmptyInserts = false;
