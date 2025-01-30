@@ -76,7 +76,7 @@
                 </tr>
                 <tr>
                     <th>Cost to proceed the order</th>
-                    <td><?= $ep_data->request_cost_currency ?> <?= $ep_data->request_cost_amount ?></td>
+                    <td><?= $ep_data->request_cost_currency ?> <?= number_format($ep_data->request_cost_amount, 2, '.', ',') ?></td>
                 </tr>
                 <tr>
                     <th>Exception Paper Status</th>
