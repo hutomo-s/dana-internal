@@ -278,4 +278,22 @@ function check_ep_approval($ep_id, $my_user_id)
         'previous_status' => $previous_status,
         'next_status' => $next_status,
     ];
+
+function rewrite_img_src($fullpath, $is_html_preview = false)
+{
+    if(empty($fullpath))
+    {
+        return null;
+    }
+
+    if($is_html_preview)
+    {
+        return $fullpath;
+    }
+
+    $os_fullpath = ROOTPATH.'public'.$fullpath;
+
+    return $os_fullpath;
+}
+
 }
