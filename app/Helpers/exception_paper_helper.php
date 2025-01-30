@@ -111,14 +111,8 @@ function build_ep_approval_data($ep_id, $current_status, $currency, $amout)
         // from exception_paper_helper
         $next_status = get_ep_status('APPROVED_BY_EXCOM_2');
 
-        $department_data = $db->table('departments')
-               ->select('id')
-               ->where('department_code', 'FINANCIAL')
-               ->get(1)
-               ->getRow();
-        
         // department id should be FINANCIAL
-        $department_id_approver = $department_data->id;
+        $department_id_approver = get_department_id('FINANCIAL');
 
         // approver role is C_LEVEL
         $role_id_approver = get_role_id('C_LEVEL');
@@ -181,6 +175,19 @@ function get_role_id($role_code)
                ->getRow();
 
     return $role_data->id;
+}
+
+function get_department_id($department_code)
+{
+    $db = \Config\Database::connect();
+
+    $department_data = $db->table('departments')
+                          ->select('id')
+                          ->where('department_code', $department_code)
+                          ->get(1)
+                          ->getRow();
+
+    return $department_data->id;
 }
 
 function check_ep_approval($ep_id, $my_user_id)
