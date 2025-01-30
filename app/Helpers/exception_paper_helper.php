@@ -122,4 +122,18 @@ function build_ep_history_data($ep_id, $previous_status, $current_status)
     ];
 
     return $ep_history_data;
+
+function get_role_code($my_user_id)
+{
+    $db = \Config\Database::connect();
+
+    $user = $db->table('users')
+               ->select('users.*, roles.role_code')
+               ->join('roles', 'roles.id = users.role_id')
+               ->where('users.id', $my_user_id)
+               ->get(1)
+               ->getRow();
+
+    return $user->role_code;
+}
 }
