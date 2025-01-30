@@ -105,6 +105,24 @@ function build_ep_approval_data($ep_id, $current_status, $currency, $amout)
         // approver role is C_LEVEL
         $role_id_approver = get_role_id('C_LEVEL');
     }
+    // current status 3: APPROVED_BY_EXCOM_1
+    else if($current_status == 3)
+    {
+        // from exception_paper_helper
+        $next_status = get_ep_status('APPROVED_BY_EXCOM_2');
+
+        $department_data = $db->table('departments')
+               ->select('id')
+               ->where('department_code', 'FINANCIAL')
+               ->get(1)
+               ->getRow();
+        
+        // department id should be FINANCIAL
+        $department_id_approver = $department_data->id;
+
+        // approver role is C_LEVEL
+        $role_id_approver = get_role_id('C_LEVEL');
+    }
 
     $ep_approval_data = [
         'exception_paper_id' => $ep_id,
