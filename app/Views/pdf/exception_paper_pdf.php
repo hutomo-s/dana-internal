@@ -57,7 +57,7 @@
         <td><img src="<?= $ep_history_list['excom_1']['signature'] ?>" style="max-width: 150px; height: auto;"></td>
         <td><img src="<?= $ep_history_list['excom_2']['signature'] ?>" style="max-width: 150px; height: auto;"></td>
         <?php if($ep_history_list['ceo']['name']): ?>
-        <td><img src="<?= $ep_history_list['excom_2']['signature'] ?>" style="max-width: 150px; height: auto;"></td>
+        <td><img src="<?= $ep_history_list['ceo']['signature'] ?>" style="max-width: 150px; height: auto;"></td>
         <?php endif ?>
     </tr>
     <tr>
@@ -66,7 +66,7 @@
         <td><?= $ep_history_list['excom_1']['name'] ?? '' ?></td>
         <td><?= $ep_history_list['excom_2']['name'] ?? '' ?></td>
         <?php if($ep_history_list['ceo']['name']): ?>
-        <td><?= $ep_history_list['excom_2']['signature'] ?? '' ?></td>
+        <td><?= $ep_history_list['ceo']['name'] ?? '' ?></td>
         <?php endif ?>
     </tr>
     
