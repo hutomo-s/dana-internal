@@ -24,7 +24,13 @@
                 <?php foreach($users as $user): ?>
                 <tr>
                     <th scope="row"><?= $user->user_email ?></th>
-                    <td><?= $user->display_name ?></td>
+                    <td>
+                        <?= $user->display_name ?>
+                        <br />
+                        <?php if($user->signature_image_fullpath): ?>
+                            <img src="<?= $user->signature_image_fullpath ?>">
+                        <?php endif ?>
+                    </td>
                     <td><?= $user->role_name ?></td>
                     <td><?= $user->department_name ?></td>
                     <td>
