@@ -72,6 +72,20 @@ Activity Diagram for Dana Exception Papers
 
 
 
+## Status Codes
+
+Below is the allowed values of field `exception_papers.exception_status` (smallint) 
+
+| Status ID | Status Code | Description
+| --- | --- | ---
+| 1 | CREATED_BY_REQUESTOR | First Status on EP Creation, Waiting Approval from Line Manager
+| 2 | APPROVED_BY_LINE_MANAGER | After Approved by Line Manager, Waiting Approval from Excom I
+| 3 | APPROVED_BY_EXCOM_1 | After Approved by Excom I, Waiting Approval from Excom II
+| 4 | APPROVED_BY_EXCOM_2 | After Approved by Excom I
+| 5 | APPROVED_BY_CEO | After Approved by CEO
+| 6 | SUBMITTED_TO_PROCUREMENT | EP is Submitted and Approval is Completed
+
+
 
 ## Authors
 
