@@ -206,7 +206,7 @@ class ExceptionPapers extends BaseController
         $session = service('session');
 
         $ep_data = $db->table('exception_papers')
-                      ->select('exception_papers.*, users.display_name')
+                      ->select('exception_papers.*, users.display_name, users.user_email')
                       ->join('users', 'users.id = exception_papers.requestor_id')
                       ->where('exception_papers.id', $ep_id)
                       ->get(1)
@@ -234,6 +234,22 @@ class ExceptionPapers extends BaseController
             return $epa->attachment_category === 'impact';
         });
 
+        $ep_approval_first = $db->table('exception_paper_approval')
+                                ->select('*')
+                                ->where('exception_paper_id', $ep_id)
+                                ->where('current_status', 1)
+                                ->get()
+                                ->getRow();
+
+        $line_manager_id = $ep_approval_first->user_id_approver;
+
+        // line manager data
+        $line_manager = $db->table('users')
+                           ->select('display_name, user_email')
+                           ->where('id', $line_manager_id)
+                           ->get()
+                           ->getRow();
+
         $my_user_id = $session->get('user_id');
         
         // from exception_paper_helper
@@ -247,6 +263,7 @@ class ExceptionPapers extends BaseController
             'ep_data' => $ep_data,
             'ep_attachments_reason' => $ep_attachments_reason,
             'ep_attachments_impact' => $ep_attachments_impact,
+            'line_manager' => $line_manager,
             'submit_approval_url' => $submit_approval_url,
         ];
 

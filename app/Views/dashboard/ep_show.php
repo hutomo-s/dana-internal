@@ -80,7 +80,11 @@
                 </tr>
                 <tr>
                     <th>Requestor Name</th>
-                    <td><?= $ep_data->display_name ?></td>
+                    <td><?= $ep_data->display_name ?> &lt;<?php echo $ep_data->user_email; ?>&gt;</td>
+                </tr>
+                <tr>
+                    <th>Line Manager</th>
+                    <td><?= $line_manager->display_name ?> &lt;<?php echo $line_manager->user_email; ?>&gt;</td>
                 </tr>
                 <tr>
                     <th>Exception Paper Status</th>
